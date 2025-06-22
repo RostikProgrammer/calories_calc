@@ -304,21 +304,25 @@
         @media (max-width: 768px) {
             html, body {
                 width: 100vw;
-                height: 100vh;
+                min-width: 0;
                 max-width: 100vw;
-                max-height: 100vh;
                 overflow-x: hidden;
-                overflow-y: auto;
                 margin: 0;
-                padding: 10px;
+                padding: 0;
+                box-sizing: border-box;
             }
             .calculator {
+                width: 100vw;
+                max-width: 100vw;
+                box-sizing: border-box;
                 padding: 10px;
                 border-radius: 16px;
                 box-shadow: 0 4px 30px rgba(0,0,0,0.1);
                 background: rgba(58, 58, 60, 0.85);
                 backdrop-filter: blur(6px);
                 -webkit-backdrop-filter: blur(6px);
+                margin-left: auto;
+                margin-right: auto;
             }
             .form-group {
                 margin-right: 0;
