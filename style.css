@@ -1,10 +1,7 @@
 .glass-effect {
-    background: rgba(255, 255, 255, 0.0); /* Збільшено непрозорість для згладжування */
-    backdrop-filter: blur(100px); /* Зменшено інтенсивність розмиття */
+    background: rgba(255, 255, 255, 0.0); 
+    backdrop-filter: blur(100px); 
     -webkit-backdrop-filter: blur(150px); /* Підтримка для Safari */
-    border: 1px solid rgba(255, 255, 255, 0.1); /* Додано тонку межу */
-    border-radius: 8px; /* Закруглені кути для плавності */
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.05); /* Легка тінь для глибини */
 }
 
 html, body {
