@@ -111,11 +111,7 @@
         }
         
         button {
-            background: rgba(58, 58, 60, 0.8);
-            border-radius: 16px;
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-            backdrop-filter: blur(6px);
-            -webkit-backdrop-filter: blur(6px);            
+            background: #1c1c1e;        
             color: white;
             border: none;
             padding: 12px 20px;
@@ -491,12 +487,12 @@
                 <label for="deficit-slider">Відсоток дефіциту/профіциту</label>
                 <div class="slider-container">
                     <div class="slider-value" id="deficit-value">0%</div>
-                    <input type="range" id="deficit-slider" min="-50" max="50" step="10" value="0" required class="form-input">
+                    <input type="range" id="deficit-slider" min="-30" max="30" step="5" value="0" required class="form-input">
                     <div class="slider-labels">
-                        <span>-50%</span>
+                        <span>-30%</span>
                         <span>Дефіцит</span>                        
                         <span>Профіцит</span>
-                        <span>+50%</span>
+                        <span>+30%</span>
                     </div>
                 </div>
             </div>
