@@ -4,32 +4,52 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Калькулятор калорійності</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="img/favicon.png" type="image/x-icon">
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             line-height: 1.6;
-            color: #333;
+            color: #f3f3f8;
             max-width: 800px;
             margin: 0 auto;
             padding: 20px;
-            background-color: #f7f9fc;
+            background: linear-gradient(135deg, #3a3a3a, #000000);
         }
         
         h1 {
-            color: #2c3e50;
+            color: #ffffff;
             text-align: center;
             margin-bottom: 30px;
         }
         
-        .calculator {
-            background-color: white;
-            border-radius: 10px;
+        .calculator-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;         
+            
+        }
+
+        .calculator {            
+            background: rgba(58, 58, 60, 0.68);
+            border-radius: 16px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
             padding: 25px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
         
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 20px;            
+            width: 100%;
+        }
+
+        .form-input {
+            background-color: #2c2c2e;
+            border: none;
+            color: #f3f3f8;
         }
         
         label {
@@ -41,13 +61,13 @@
         input[type="number"], select {
             width: 100%;
             padding: 10px;
-            border: 1px solid #ddd;
             border-radius: 4px;
             font-size: 16px;
+            box-sizing: border-box;
         }
         
         input[type="number"]:required, select:required {
-            border-left: 4px solid #3498db;
+            border-left: 4px solid #0a84ff;
         }
         
         .radio-group {
@@ -55,18 +75,32 @@
         }
         
         .radio-option {
-            display: flex;
-            align-items: center;
-            margin-bottom: 8px;
+            flex-direction: column;
+            align-items: flex-start;
+            margin-bottom: 15px;
+            padding: 15px;            
+            border-radius: 5px;
+            background-color: #2c2c2e;
+            cursor: pointer;
+            transition: all 0.2s ease;
         }
         
-        .radio-option input[type="radio"] {
-            margin-right: 10px;
+        .radio-option:hover {
+            background-color: #3a3a3c;
+            border-color: #0a84ff;
+        }
+        
+        .radio-option.selected {
+            background-color: #3a3a3c;
+            border-color: #0a84ff;
+            box-shadow: 0 2px 4px rgba(52, 152, 219, 0.2);
         }
         
         .radio-option label {
-            margin-bottom: 0;
-            font-weight: normal;
+            font-size: 14px;
+            line-height: 1.4;
+            cursor: pointer;
+            width: 100%;
         }
         
         .radio-value {
@@ -77,7 +111,11 @@
         }
         
         button {
-            background-color: #3498db;
+            background: rgba(58, 58, 60, 0.8);
+            border-radius: 16px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);            
             color: white;
             border: none;
             padding: 12px 20px;
@@ -90,11 +128,15 @@
         }
         
         button:hover {
-            background-color: #2980b9;
+            background-color: #0a84ff;
         }
         
         .results {
-            background-color: #e8f4fd;
+            background: rgba(58, 58, 60, 0.8);
+            border-radius: 16px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
             padding: 20px;
             border-radius: 5px;
             margin-top: 30px;
@@ -102,7 +144,7 @@
         }
         
         .results h2 {
-            color: #2c3e50;
+            color: white;
             margin-top: 0;
         }
         
@@ -113,13 +155,13 @@
         
         .result-value {
             font-weight: bold;
-            color: #2980b9;
+            color: #0a84ff;
         }
         
         .macro-results {
             margin-top: 20px;
             padding-top: 20px;
-            border-top: 1px solid #ddd;
+            border-top: 1px solid #0a84ff;
         }
         
         .macro-title {
@@ -139,7 +181,7 @@
         
         .macro-info {
             font-size: 14px;
-            color: #666;
+            color: #f3f3f8;
             margin-bottom: 15px;
         }
         
@@ -159,20 +201,77 @@
             font-weight: bold;
             font-size: 18px;
             margin-bottom: 10px;
-            color: #2c3e50;
+            color: #0a84ff;
         }
         
         input[type="range"] {
+            -webkit-appearance: none;
+            appearance: none;
             width: 100%;
-            margin-top: 10px;
-            margin-bottom: 10px;
+            height: 8px;
+            background: #f3f3f8;
+            border-radius: 5px;
+            outline: none;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            background: #0a84ff;
+            border-radius: 50%;
+            border: 2px solid #fff;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        input[type="range"]:focus::-webkit-slider-thumb {
+            background: #329aff;
+        }
+        input[type="range"]::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            background: #0a84ff;
+            border-radius: 50%;
+            border: 2px solid #fff;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        input[type="range"]:focus::-moz-range-thumb {
+            background: #329aff;
+        }
+        input[type="range"]::-ms-thumb {
+            width: 24px;
+            height: 24px;
+            background: #0a84ff;
+            border-radius: 50%;
+            border: 2px solid #fff;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        input[type="range"]:focus::-ms-thumb {
+            background: #329aff;
+        }
+        input[type="range"]::-moz-range-track {
+            background: #f3f3f8;
+            border-radius: 5px;
+        }
+        input[type="range"]::-ms-fill-lower {
+            background: #f3f3f8;
+            border-radius: 5px;
+        }
+        input[type="range"]::-ms-fill-upper {
+            background: #f3f3f8;
+            border-radius: 5px;
         }
         
         .slider-labels {
             display: flex;
             justify-content: space-between;
             margin-top: 5px;
-            color: #666;
+            color: #f3f3f8;
             font-size: 14px;
         }
         
@@ -181,15 +280,12 @@
             margin-left: 4px;
         }
         
-        .form-group.required label:after {
-            content: "*";
+        .form-group.required label:after {            
             color: #e74c3c;
             margin-left: 4px;
         }
         
-        .form-group.required {
-            margin-right: 20px;
-        }
+
         
         /* Відлагоджувальний блок */
         .debug-info {
@@ -200,6 +296,136 @@
             font-size: 12px;
             display: none;
         }
+        #gender {
+            width: 100%;
+        }
+        
+        /* Адаптивні стилі для мобільних пристроїв */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            .calculator {
+                padding: 15px;
+            }
+            
+            .form-group {
+                margin-right: 0;
+            }
+            
+            .radio-option {
+                flex-direction: column;
+                align-items: flex-start;
+                margin-bottom: 15px;
+                padding: 10px;                
+                border-radius: 5px;
+                background-color: #2c2c2e;
+                cursor: pointer;
+                transition: all 0.2s ease;
+            }
+            
+            .radio-option:hover {
+                background-color: #3a3a3c;
+                border-color: #3498db;
+            }
+            
+            .radio-option.selected {
+                background-color: #3a3a3c;                
+                border-color: #3498db;
+                box-shadow: 0 2px 4px rgba(52, 152, 219, 0.2);
+            }
+            
+            .radio-option input[type="radio"] {
+                margin-right: 0;
+                margin-bottom: 8px;
+            }
+            
+            .radio-option label {
+                font-size: 14px;
+                line-height: 1.4;
+                cursor: pointer;
+            }
+            
+            .radio-value {
+                min-width: 50px;
+                font-size: 16px;
+            }
+            
+            .macro-input {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .macro-input .form-group {
+                width: 100%;
+            }
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 16px;
+        }
+        .form-row .form-group {
+            margin-bottom: 0;
+        }
+        @media (max-width: 700px) {
+            .calculator {
+                padding: 10px;
+                border-radius: 16px;
+                box-shadow: 0 4px 30px rgba(0,0,0,0.1);
+                background: rgba(58, 58, 60, 0.85);
+                backdrop-filter: blur(6px);
+                -webkit-backdrop-filter: blur(6px);
+            }
+            .radio-option {
+                color: #f3f3f8 !important;
+            }
+            .radio-option.selected {
+                color: #0a84ff !important;
+            }
+            .form-row {
+                display: flex !important;
+                flex-direction: row !important;
+                gap: 10px !important;
+                margin-bottom: 32px !important;
+            }
+            .form-row .form-group {
+                margin-bottom: 0 !important;
+            }
+            .form-group {
+                margin-bottom: 18px;
+            }
+            .results, .macro-results {
+                background: rgba(58, 58, 60, 0.85) !important;
+                border-radius: 16px !important;
+                box-shadow: 0 4px 30px rgba(0,0,0,0.1) !important;
+                backdrop-filter: blur(6px) !important;
+                -webkit-backdrop-filter: blur(6px) !important;
+                padding: 16px !important;
+            }
+            button {
+                font-size: 18px;
+                padding: 14px;
+                border-radius: 16px;
+                margin-top: 18px;
+            }
+            .macro-input {
+                display: flex !important;
+                flex-direction: row !important;
+                gap: 10px !important;
+            }
+            .slider-labels {
+                font-size: 13px;
+                color: #f3f3f8;
+            }
+            .result-item {
+                font-size: 16px;
+            }
+            .results h2, .results h3 {
+                font-size: 18px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -209,61 +435,54 @@
         <form id="calculatorForm">
             <div class="form-group required">
                 <label for="gender">Стать</label>
-                <select id="gender" required>
+                <select id="gender" required class="form-input">
                     <option value="">Оберіть стать</option>
                     <option value="ч">Чоловіча</option>
                     <option value="ж">Жіноча</option>
                 </select>
             </div>
             
-            <div class="form-group required">
-                <label for="weight">Вага (кг)</label>
-                <input type="number" id="weight" min="30" max="300" step="0.1" placeholder="Наприклад: 70" required>
-                <div class="error" id="weight-error">Будь ласка, введіть вагу від 30 до 300 кг</div>
-            </div>
-            
-            <div class="form-group required">
-                <label for="height">Зріст (см)</label>
-                <input type="number" id="height" min="100" max="250" step="0.1" placeholder="Наприклад: 175" required>
-                <div class="error" id="height-error">Будь ласка, введіть зріст від 100 до 250 см</div>
-            </div>
-            
-            <div class="form-group required">
-                <label for="age">Вік</label>
-                <input type="number" id="age" min="15" max="120" step="1" placeholder="Наприклад: 25" required>
-                <div class="error" id="age-error">Будь ласка, введіть вік від 15 до 120 років</div>
+            <div class="form-row">
+                <div class="form-group required">
+                    <label for="weight">Вага (кг)</label>
+                    <input type="number" id="weight" min="30" max="300" step="0.1" placeholder="Наприклад: 70" required class="form-input">
+                    <div class="error" id="weight-error">Будь ласка, введіть вагу від 30 до 300 кг</div>
+                </div>
+                <div class="form-group required">
+                    <label for="height">Зріст (см)</label>
+                    <input type="number" id="height" min="100" max="250" step="0.1" placeholder="Наприклад: 175" required class="form-input">
+                    <div class="error" id="height-error">Будь ласка, введіть зріст від 100 до 250 см</div>
+                </div>
+                <div class="form-group required">
+                    <label for="age">Вік</label>
+                    <input type="number" id="age" min="15" max="120" step="1" placeholder="Наприклад: 25" required class="form-input">
+                    <div class="error" id="age-error">Будь ласка, введіть вік від 15 до 120 років</div>
+                </div>
             </div>
             
             <div class="form-group required">
                 <label>Коефіцієнт активності</label>
                 <div class="radio-group">
-                    <div class="radio-option">
-                        <input type="radio" id="activity1" name="activity" value="1.2" required>
-                        <label for="activity1"><span class="radio-value">1.2</span> - мінімальна активність</label>
+                    <div class="radio-option" data-value="1.2">
+                        <label><span class="radio-value">1.2</span> - мінімальна активність</label>
                     </div>
-                    <div class="radio-option">
-                        <input type="radio" id="activity2" name="activity" value="1.375">
-                        <label for="activity2"><span class="radio-value">1.375</span> - 3 тренування на тиждень</label>
+                    <div class="radio-option" data-value="1.375">
+                        <label><span class="radio-value">1.375</span> - 3 тренування на тиждень</label>
                     </div>
-                    <div class="radio-option">
-                        <input type="radio" id="activity3" name="activity" value="1.465">
-                        <label for="activity3"><span class="radio-value">1.465</span> - 5 тренувань на тиждень</label>
+                    <div class="radio-option" data-value="1.465">
+                        <label><span class="radio-value">1.465</span> - 5 тренувань на тиждень</label>
                     </div>
-                    <div class="radio-option">
-                        <input type="radio" id="activity4" name="activity" value="1.55">
-                        <label for="activity4"><span class="radio-value">1.55</span> - 5 тренувань + фізична робота</label>
+                    <div class="radio-option" data-value="1.55">
+                        <label><span class="radio-value">1.55</span> - 5 тренувань + фізична робота</label>
                     </div>
-                    <div class="radio-option">
-                        <input type="radio" id="activity5" name="activity" value="1.6375">
-                        <label for="activity5"><span class="radio-value">1.6375</span> - 7 тренувань на тиждень</label>
+                    <div class="radio-option" data-value="1.6375">
+                        <label><span class="radio-value">1.6375</span> - 7 тренувань на тиждень</label>
                     </div>
-                    <div class="radio-option">
-                        <input type="radio" id="activity6" name="activity" value="1.725">
-                        <label for="activity6"><span class="radio-value">1.725</span> - 7 тренувань + фізична робота</label>
+                    <div class="radio-option" data-value="1.725">
+                        <label><span class="radio-value">1.725</span> - 7 тренувань + фізична робота</label>
                     </div>
-                    <div class="radio-option">
-                        <input type="radio" id="activity7" name="activity" value="1.9">
-                        <label for="activity7"><span class="radio-value">1.9</span> - професіонал (2 тренування в день)</label>
+                    <div class="radio-option" data-value="1.9">
+                        <label><span class="radio-value">1.9</span> - 2 тренування в день</label>
                     </div>
                 </div>
             </div>
@@ -272,11 +491,10 @@
                 <label for="deficit-slider">Відсоток дефіциту/профіциту</label>
                 <div class="slider-container">
                     <div class="slider-value" id="deficit-value">0%</div>
-                    <input type="range" id="deficit-slider" min="-50" max="50" step="10" value="0" required>
+                    <input type="range" id="deficit-slider" min="-50" max="50" step="10" value="0" required class="form-input">
                     <div class="slider-labels">
                         <span>-50%</span>
-                        <span>Дефіцит</span>
-                        <span>0%</span>
+                        <span>Дефіцит</span>                        
                         <span>Профіцит</span>
                         <span>+50%</span>
                     </div>
@@ -309,21 +527,21 @@
                 
                 <form id="macrosForm">
                     <div class="macro-title">Розрахунок макронутрієнтів:</div>
-                    <div class="macro-input" style="display: flex; gap: 100px; margin-right: 15px;">
+                    <div class="macro-input" style="display: flex; gap: 10px;">
                         <div class="form-group required">
                             <label for="protein">Білки (г/кг)</label>
-                            <input type="number" id="protein" min="0.8" max="3" step="0.1" value="2" required>
+                            <input type="number" id="protein" min="0.8" max="3" step="0.1" value="2" required class="form-input">
                         </div>
                         <div class="form-group required">
                             <label for="fat">Жири (г/кг)</label>
-                            <input type="number" id="fat" min="0.4" max="2" step="0.1" value="1" required>
+                            <input type="number" id="fat" min="0.4" max="2" step="0.1" value="1" required class="form-input">
                         </div>
                     </div>
                     
                     <button type="button" id="calculate-macros">Розрахувати макронутрієнти</button>
                 </form>
                 
-                <div class="results" id="macro-results" style="display: none; background-color: #f0f7ff; margin-top: 20px;">
+                <div id="macro-results" style="display: none; padding: 10px">
                     <h3>Макронутрієнти до споживання:</h3>
                     <div class="result-item">
                         Білків: <span class="result-value" id="protein-g"></span> г - <span class="result-value" id="protein-cal"></span> ккал
@@ -335,6 +553,7 @@
                         Вуглеводів: <span class="result-value" id="carbs-g"></span> г - <span class="result-value" id="carbs-cal"></span> ккал
                     </div>
                 </div>
+                 <button type="button" id="copy-results-btn" style="margin-top: 20px; display: none; width: 100%;">Копіювати результати</button>
             </div>
         </div>
         
@@ -452,13 +671,12 @@
                 
                 // Отримуємо вибраний коефіцієнт активності
                 let activity = 0;
-                const activityElements = document.getElementsByName('activity');
-                for (let i = 0; i < activityElements.length; i++) {
-                    if (activityElements[i].checked) {
-                        activity = parseFloat(activityElements[i].value);
-                        break;
+                const activityElements = document.querySelectorAll('.radio-option');
+                activityElements.forEach(element => {
+                    if (element.classList.contains('selected')) {
+                        activity = parseFloat(element.getAttribute('data-value'));
                     }
-                }
+                });
                 
                 debug(`Коефіцієнт активності: ${activity}`);
                 
@@ -518,6 +736,7 @@
                 
                 // Показуємо результати
                 document.getElementById('bmr-results').style.display = 'block';
+                document.getElementById('bmr-results').scrollIntoView({ behavior: 'smooth' });
                 
                 // Зберігаємо калорії для розрахунку макронутрієнтів
                 window.calculatedData.adjustedCalories = adjustedCalories;
@@ -570,11 +789,59 @@
                 document.getElementById('carbs-cal').textContent = carbCalories;
                 
                 document.getElementById('macro-results').style.display = 'block';
+                document.getElementById('copy-results-btn').style.display = 'block';
+                document.getElementById('macro-results').scrollIntoView({ behavior: 'smooth' });
                 debug('Розрахунок макронутрієнтів завершено');
             }
             
-            // Преселекція першого варіанту активності для зручності
-            document.getElementById('activity1').checked = true;
+            const copyBtn = document.getElementById('copy-results-btn');
+            copyBtn.addEventListener('click', () => {
+                let resultsText = 'Результати розрахунку\n';
+                resultsText += `BMR: ${document.getElementById('bmr-value').textContent} ккал\n`;
+                resultsText += `Денна калорійність: ${document.getElementById('daily-calories').textContent} ккал\n`;
+
+                const adjustedContainer = document.getElementById('adjusted-calories-container');
+                if (adjustedContainer.style.display !== 'none') {
+                    resultsText += `Денна калорійність з урахуванням ${document.getElementById('deficit-type').textContent}: ${document.getElementById('adjusted-calories').textContent} ккал\n`;
+                }
+
+                if (document.getElementById('macro-results').style.display !== 'none') {
+                    resultsText += 'Макронутрієнти до споживання:\n';
+                    resultsText += `Білків: ${document.getElementById('protein-g').textContent} г - ${document.getElementById('protein-cal').textContent} ккал\n`;
+                    resultsText += `Жирів: ${document.getElementById('fat-g').textContent} г - ${document.getElementById('fat-cal').textContent} ккал\n`;
+                    resultsText += `Вуглеводів: ${document.getElementById('carbs-g').textContent} г - ${document.getElementById('carbs-cal').textContent} ккал\n`;
+                }
+
+                navigator.clipboard.writeText(resultsText).then(() => {
+                    copyBtn.textContent = 'Скопійовано!';
+                    setTimeout(() => {
+                        copyBtn.textContent = 'Копіювати результати';
+                    }, 2000);
+                });
+            });
+            
+            // Додаємо обробку кліків на радіо-опції
+            const radioOptions = document.querySelectorAll('.radio-option');
+            radioOptions.forEach(option => {
+                option.addEventListener('click', function(e) {
+                    // Знімаємо виділення з усіх опцій
+                    radioOptions.forEach(opt => opt.classList.remove('selected'));
+                    // Виділяємо поточну опцію
+                    this.classList.add('selected');
+                });
+            });
+            
+            // Встановлюємо початкове виділення для першої опції
+            document.querySelector('.radio-option').classList.add('selected');
+
+            function setPlaceholders() {
+                const isMobile = window.innerWidth <= 700;
+                document.getElementById('weight').placeholder = isMobile ? '70' : 'Наприклад: 70';
+                document.getElementById('height').placeholder = isMobile ? '175' : 'Наприклад: 175';
+                document.getElementById('age').placeholder = isMobile ? '25' : 'Наприклад: 25';
+            }
+            setPlaceholders();
+            window.addEventListener('resize', setPlaceholders);
         });
     </script>
 </body>
